@@ -1,4 +1,4 @@
-# Mini-Projet POO
+# Mini-Projet POO -- MOGOU IGOR GREEN
 
 Ce mini-projet est une application de gestion de répertoire de contacts, développée en Java dans le cadre d'un cours de Programmation Orientée Objet (POO).
 
