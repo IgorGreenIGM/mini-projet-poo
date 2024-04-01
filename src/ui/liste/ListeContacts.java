@@ -1,0 +1,331 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package ui.liste;
+
+import core.Contact;
+import core.Repertoire;
+
+import java.sql.*;
+
+import javax.swing.UIManager;
+import com.formdev.flatlaf.FlatDarkLaf;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import javax.swing.table.DefaultTableModel;
+
+
+public class ListeContacts extends javax.swing.JFrame {
+
+    public ListeContacts(Repertoire repertoire, Connection connection) {
+        try {
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+        } catch (UnsupportedLookAndFeelException e) {
+        }        
+        initComponents();
+        
+        this.repertoire = repertoire;
+        this.connection = connection;
+        setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+        
+        // affichage des contacts dans les tables
+        this.afficherContacts();
+    }
+    
+    private void afficherContacts() {
+        // table iterators
+        DefaultTableModel modelEtudiant = (DefaultTableModel) this.tableEtudiantsEntry.getModel();        
+        DefaultTableModel modelEnseignant = (DefaultTableModel) this.tableEnseignantsEntry.getModel();        
+        DefaultTableModel modelAgent = (DefaultTableModel) this.tableAgentsEntry.getModel();
+        
+        // iter over database
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            // Etudiant
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM Etudiant");
+            while (rs.next()) 
+                modelEtudiant.insertRow(0, new Object[]{rs.getString("code"), rs.getString("nom"), rs.getDate("date_naissance"), rs.getString("adresse"), rs.getString("email"), rs.getString("tel_number"), rs.getString("cycle"), rs.getString("niveau")});
+
+            // Enseignant
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM Enseignant");
+            while (rs.next()) 
+                modelEnseignant.insertRow(0, new Object[]{rs.getString("code"), rs.getString("nom"), rs.getDate("date_naissance"), rs.getString("adresse"), rs.getString("email"), rs.getString("tel_number"), rs.getString("statut")});            
+            
+            // Agent
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM Agent");
+            while (rs.next())                                                                                                                                                                                       // salaire, statut, categorie, indice_salaire, occupation
+                modelAgent.insertRow(0, new Object[]{rs.getString("code"), rs.getString("nom"), rs.getDate("date_naissance"), rs.getString("adresse"), rs.getString("email"), rs.getString("tel_number"), Integer.toString(rs.getInt("salaire")), rs.getString("statut"), rs.getString("categorie"), Integer.toString(rs.getInt("indice_salaire")), rs.getString("occupation")});
+            
+        } catch (SQLException e) {
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+            }
+        }
+
+        // iter over repertoire . . .
+        for (Contact contact : repertoire.getRepertoire()) {
+            if (contact instanceof core.Etudiant etudiant) {
+                modelEtudiant.insertRow(0, new Object[]{etudiant.getCode(), etudiant.getNom(), etudiant.getDateDeNaissance(), etudiant.getAddress(), etudiant.getEmail(), etudiant.getTelNumber(), etudiant.getCycle().name(), etudiant.getNiveau()});
+            }
+            else if (contact instanceof core.Enseignant enseignant){
+                modelEnseignant.insertRow(0, new Object[]{enseignant.getCode(), enseignant.getNom(), enseignant.getDateDeNaissance(), enseignant.getAddress(), enseignant.getEmail(), enseignant.getTelNumber(), enseignant.getStatut().name()});
+            }
+            else if (contact instanceof core.Agent agent){
+                modelAgent.insertRow(0, new Object[]{agent.getCode(), agent.getNom(), agent.getDateDeNaissance(), agent.getAddress(), agent.getEmail(), agent.getTelNumber(), Integer.toString(agent.getSalaire()), agent.getStatut().name(), agent.getCategorie(), Integer.toString(agent.getIndiceSalaire()), agent.getOccupation()});
+            }
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableEtudiantsEntry = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tableEnseignantsEntry = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tableAgentsEntry = new javax.swing.JTable();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Eras Bd BT", 0, 18)); // NOI18N
+        jLabel1.setText("LISTE DES CONTACTS");
+
+        tableEtudiantsEntry.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "code", "nom", "Date de naissance", "addresse", "email", "numéro téléphone", "cycle", "niveau"
+            }
+        ));
+        tableEtudiantsEntry.setFocusable(false);
+        tableEtudiantsEntry.setShowHorizontalLines(true);
+        tableEtudiantsEntry.setShowVerticalLines(true);
+        tableEtudiantsEntry.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tableEtudiantsEntry);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 938, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Etudiants", jPanel2);
+
+        tableEnseignantsEntry.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "code", "nom", "Date de naissance", "addresse", "email", "numéro téléphone", "statut"
+            }
+        ));
+        tableEnseignantsEntry.setFocusable(false);
+        tableEnseignantsEntry.setShowHorizontalLines(true);
+        tableEnseignantsEntry.setShowVerticalLines(true);
+        tableEnseignantsEntry.getTableHeader().setReorderingAllowed(false);
+        jScrollPane4.setViewportView(tableEnseignantsEntry);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 938, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Enseignants", jPanel3);
+
+        tableAgentsEntry.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "code", "nom", "Date de naissance", "addresse", "email", "numéro téléphone", "salaire", "statut", "categorie", "indice salaire", "occupation"
+            }
+        ));
+        tableAgentsEntry.setFocusable(false);
+        tableAgentsEntry.setShowHorizontalLines(true);
+        tableAgentsEntry.setShowVerticalLines(true);
+        tableAgentsEntry.getTableHeader().setReorderingAllowed(false);
+        jScrollPane5.setViewportView(tableAgentsEntry);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 938, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Agents", jPanel4);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+    
+    // private variables
+    private final Connection connection; 
+    private final Repertoire repertoire;
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable tableAgentsEntry;
+    private javax.swing.JTable tableEnseignantsEntry;
+    private javax.swing.JTable tableEtudiantsEntry;
+    // End of variables declaration//GEN-END:variables
+}
