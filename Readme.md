@@ -28,4 +28,4 @@ Ce projet a été développé par Mogou Igor Green -- 3GI -- 21P246
 
 ## Licence
 
-Ce projet est sous licence [licence ici]. Voir le fichier LICENSE pour plus de détails.
+Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
